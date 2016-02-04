@@ -76,4 +76,5 @@ public class Square : MonoBehaviour {
 		Debug.Log ("on mouse down");
 		active = true;
 	}
+
 }

@@ -20,9 +20,14 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 //		grid [1, 2].active = true;
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				grid [i, j].wrong = false;
+			}
+		}
 		checkCols();
 		checkRows();
-		checkSubs ();
+//		checkSubs ();
 	}
 
 	void checkCols() {
@@ -36,9 +41,13 @@ public class GameController : MonoBehaviour {
 					for (int k = 0; k < 9; k++) {
 						grid [i, k].wrong = true;
 					}
+					break;
 				} else {
 					checker [(curr.number - 1)] = true;
 				}
+//				for (int k = 0; k < 9; k++) {
+//					grid [i, k].wrong = false;
+//				}
 			}
 		}
 	}
@@ -54,14 +63,18 @@ public class GameController : MonoBehaviour {
 					for (int k = 0; k < 9; k++) {
 						grid [k, j].wrong = true;
 					}
+					break;
 				} else {
 					checker [(curr.number - 1)] = true;
 				}
+//				for (int k = 0; k < 9; k++) {
+//					grid [k, j].wrong = false;
+//				}
 			}
 		}
 	}
-
-	void checkSubs() {
-		
-	}
+//
+//	void checkSubs() {
+//		
+//	}
 }
