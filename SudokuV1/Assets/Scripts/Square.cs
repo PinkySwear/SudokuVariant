@@ -8,33 +8,60 @@ public class Square : MonoBehaviour {
 	private Renderer myRenderer;
 	public int number;
 	public bool wrong;
+	public bool mouseOver;
+	public bool isFixed;
+	public float offset;
+//	private Vector3 originalPos;
 
 	// Use this for initialization
 	void Start () {
 		active = false;
 		tm = this.gameObject.GetComponentInChildren<TextMesh> ();
 		myRenderer = this.gameObject.GetComponent<Renderer> ();
+		if (isFixed) {
+			myRenderer.material.color = Color.gray;
+		}
 		tm.text = "";
-		number = 0;
+
+		if(!isFixed) {
+			number = 0;
+		}
+		offset = Random.value*2f;
+//		originalPos = transform.position;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		//random bullshit to make the cubes float around a bit
+//		transform.position = new Vector3(transform.position.x+0.005f*Mathf.Sin(Time.time+offset), transform.position.y+0.005f*Mathf.Sin(Time.time+offset), originalPos.z);
+
+
+		if (Input.GetMouseButtonDown(0) && !mouseOver) {
+			active = false;
+		}
 		if (number == 0) {
 			tm.text = "";
 		}
 		else {
 			tm.text = number.ToString ();
 		}
+		if (!isFixed) {
+			if (wrong) {
+				myRenderer.material.color = new Color (1f, 0.5f, 0.5f);
+			} else {
+				myRenderer.material.color = Color.white;
+			}
+		} else {
+			if (wrong) {
+				myRenderer.material.color = new Color(0.65f, 0.45f, 0.45f);
+			} else {
+				myRenderer.material.color = new Color(0.75f, 0.75f, 0.75f);
+			}
 
-		myRenderer.material.color = Color.white;
-		if (wrong) {
-			myRenderer.material.color = Color.red;
 		}
 
 		if (active) {
-			myRenderer.material.color = Color.black;
-			Debug.Log ("I am active");
+			myRenderer.material.color = Color.yellow;
 			if (Input.GetKeyDown (KeyCode.Alpha1)) {
 				number = 1;
 				active = false;
@@ -73,8 +100,18 @@ public class Square : MonoBehaviour {
 	}
 
 	void OnMouseDown() {
-		Debug.Log ("on mouse down");
-		active = true;
+		if (!isFixed) {
+			active = true;
+
+		}
+	}
+
+	void OnMouseEnter() {
+		mouseOver = true;
+	}
+
+	void OnMouseExit() {
+		mouseOver = false;
 	}
 
 }
