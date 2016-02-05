@@ -85,9 +85,30 @@ public class GameController : MonoBehaviour {
 	bool checkSubs(int aSize) {
 		bool correct = true;
 		switch (aSize) {
-		case 3: 
-			correct =  true;
-			break;
+		case 3:
+			{
+				bool[] checker = new bool[9];
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < 3; j++) {
+//					bool[] checker = new bool[9];
+						Square curr = grid [i, j];
+						if (curr.number == 0) {
+							//donothing
+						} else if (checker [curr.number - 1]) {
+							for (int k = 0; k < 3; k++) {
+								for (int l = 0; l < 3; l++) {
+									grid [k, l].wrong = true;
+								}
+							}
+							correct = false;
+							break;
+						} else {
+							checker [(curr.number - 1)] = true;
+						}
+					}
+				}
+				break;
+			}
 		case 4:
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 2; j++) {
