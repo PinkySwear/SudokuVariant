@@ -11,6 +11,9 @@ public class Square : MonoBehaviour {
 	public bool mouseOver;
 	public bool isFixed;
 	public float offset;
+	public GameObject cont;
+	private GameController controller;
+
 //	private Vector3 originalPos;
 
 	// Use this for initialization
@@ -28,6 +31,8 @@ public class Square : MonoBehaviour {
 		}
 		offset = Random.value*2f;
 //		originalPos = transform.position;
+
+		controller = cont.GetComponent<GameController> ();
 	}
 
 	// Update is called once per frame
@@ -100,9 +105,21 @@ public class Square : MonoBehaviour {
 	}
 
 	void OnMouseDown() {
-		if (!isFixed) {
-			active = true;
-
+		if (!controller.suggesting) {
+			if (!isFixed) {
+				active = true;
+			}
+		} else {
+			if (!isFixed) {
+				if (number == 0) {
+					number = controller.useSuggestion ();
+				} else {
+//				controller.counter [number]--;
+//					controller.totalNumsPlaced--;
+					controller.pool.Add (number);
+					number = 0;
+				}
+			}
 		}
 	}
 
