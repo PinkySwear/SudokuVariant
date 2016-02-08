@@ -4,21 +4,33 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 	public Square[,] grid;
 //	public GameObject[] subGrids;
+
+	//set this field in the inspector
 	public int size;
 	public bool suggesting;
 	public int [] suggestions;
 	private int suggestionIndex;
-	public float refreshTime;
+
+
 	private float timer;
 //	public int[] counter;
 //	public int totalNumsPlaced;
 	public ArrayList pool;
+
+
+	//set these fields in the inspector
 	public int numSuggestions;
+	public float refreshTime;
+
+	//variable to control transparency
+	//to enable transparency, set the block material's "rendering mode" to "transparent"
+	//also check this field in the inspector
 	public bool transparent;
 
 
 	// Use this for initialization
 	void Start () {
+		//if suggesting, make a pool
 		if (suggesting) {
 			pool = new ArrayList ();
 			for (int i = 0; i < size * size; i++) {
@@ -43,6 +55,7 @@ public class GameController : MonoBehaviour {
 			}
 		}
 	
+		//if suggesting, generate the nums for the first round
 		if (suggesting) {
 			Debug.Log ("GENERATING NEW SET");
 			suggestions = generateNums ();
@@ -62,8 +75,10 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
 		timer = timer + Time.deltaTime;
 		if (suggesting) {
+			//if timer is up, or the numbers have all been used
 			if (timer > refreshTime || suggestionIndex >= suggestions.Length) {
 				for (int i = suggestionIndex; i < suggestions.Length; i++) {
 					pool.Add (suggestions [i]);
@@ -84,7 +99,6 @@ public class GameController : MonoBehaviour {
 //		grid [1, 2].active = true;
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-//				Debug.Log ("(" + i + ", " + j + ")");
 				grid [i, j].wrong = false;
 			}
 		}
@@ -98,6 +112,7 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	//check columns for correctness
 	bool checkCols() {
 		bool correct = true;
 		for (int i = 0; i < size; i++) {
@@ -119,6 +134,7 @@ public class GameController : MonoBehaviour {
 		return correct;
 	}
 
+	//check rows for correctness
 	bool checkRows() {
 		bool correct = true;
 		for (int j = 0; j < size; j++) {
@@ -140,9 +156,11 @@ public class GameController : MonoBehaviour {
 		return correct;
 	}
 
+	//check subgrids for correctness
 	bool checkSubs(int aSize) {
 		bool correct = true;
 		switch (aSize) {
+		//3x3 board (we are not using this)
 		case 3:
 			{
 				bool[] checker = new bool[9];
@@ -167,6 +185,7 @@ public class GameController : MonoBehaviour {
 				}
 				break;
 			}
+		//4x4 board
 		case 4:
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 2; j++) {
@@ -200,6 +219,7 @@ public class GameController : MonoBehaviour {
 				}
 			}
 			break;
+		//9x9 board
 		case 9: 
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
@@ -250,32 +270,21 @@ public class GameController : MonoBehaviour {
 		}
 		return true;
 	}
-
+		
+	//generates the numbers for that 
 	int[] generateNums() {
-//		Debug.Log (pool.Count);
-//		if (pool.Count < 10) {
-//			string acc = "";
-//			for (int i = 0; i < pool.Count; i++) {
-//				acc = acc + ", " + pool [i]; 
-//			}
-//			Debug.Log (acc);
-//		}
+
 		int[] nums = new int[Mathf.Min(numSuggestions, pool.Count)];
-//		string indacc = " | ";
+
 		int pc = pool.Count;
 		for (int i = 0; i < Mathf.Min(numSuggestions, pc) ; i++) {
 			int ind = (int)(Random.value * pool.Count);
-//			Debug.Log(ind);
-//			while (counter [tempNum] >= 9) {
-//				tempNum = (int)(Random.value * 9f) + 1;
-//				Debug.Log(tempNum);
-//			}
-//			indacc = indacc + ind + " | ";
+
 			nums [i] = (int) pool[ind];
 			pool.RemoveAt (ind);
 //			counter [nums [i]]++;
 		}
-//		Debug.Log (indacc);
+
 		return nums;
 	}
 

@@ -13,6 +13,7 @@ public class Square : MonoBehaviour {
 	public float offset;
 	public GameObject cont;
 	private GameController controller;
+	public WebCamTexture webCam;
 
 //	private Vector3 originalPos;
 
@@ -51,6 +52,7 @@ public class Square : MonoBehaviour {
 			tm.text = number.ToString ();
 		}
 		if (!isFixed) {
+			//color adjustments for possible transparency
 			if (number == 0 && controller.transparent) {
 				if (wrong) {
 					myRenderer.material.color = new Color (1f, 0.5f, 0.5f, 0.6f);
@@ -114,17 +116,22 @@ public class Square : MonoBehaviour {
 	}
 
 	void OnMouseDown() {
+		//if not suggesting, normal square selection, entering, etc.
 		if (!controller.suggesting) {
 			if (!isFixed) {
 				active = true;
 			}
 		} else {
+			//if suggesting and not fixed...
 			if (!isFixed) {
+				//if the square doesnt have a number, just use the suggestion
 				if (number == 0) {
 					number = controller.useSuggestion ();
 				} else {
 //				controller.counter [number]--;
 //					controller.totalNumsPlaced--;
+
+					//if the square has a number, remove it and add it back to the pool
 					controller.pool.Add (number);
 					number = 0;
 				}
