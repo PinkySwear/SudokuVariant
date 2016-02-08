@@ -22,7 +22,7 @@ public class Square : MonoBehaviour {
 		tm = this.gameObject.GetComponentInChildren<TextMesh> ();
 		myRenderer = this.gameObject.GetComponent<Renderer> ();
 		if (isFixed) {
-			myRenderer.material.color = Color.gray;
+			myRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
 		}
 		tm.text = "";
 
@@ -51,16 +51,25 @@ public class Square : MonoBehaviour {
 			tm.text = number.ToString ();
 		}
 		if (!isFixed) {
-			if (wrong) {
-				myRenderer.material.color = new Color (1f, 0.5f, 0.5f);
+			if (number == 0 && controller.transparent) {
+				if (wrong) {
+					myRenderer.material.color = new Color (1f, 0.5f, 0.5f, 0.6f);
+				} else {
+					myRenderer.material.color = new Color (1f, 1f, 1f, 0.6f);
+				}
 			} else {
-				myRenderer.material.color = Color.white;
+				if (wrong) {
+					myRenderer.material.color = new Color (1f, 0.5f, 0.5f);
+				} else {
+					myRenderer.material.color = new Color (1f, 1f, 1f);
+				}
 			}
+
 		} else {
 			if (wrong) {
-				myRenderer.material.color = new Color(0.65f, 0.45f, 0.45f);
+				myRenderer.material.color = new Color(0.55f, 0.4f, 0.4f);
 			} else {
-				myRenderer.material.color = new Color(0.75f, 0.75f, 0.75f);
+				myRenderer.material.color = new Color(0.5f, 0.5f, 0.5f);
 			}
 
 		}

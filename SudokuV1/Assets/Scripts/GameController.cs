@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour {
 //	public int totalNumsPlaced;
 	public ArrayList pool;
 	public int numSuggestions;
+	public bool transparent;
 
 
 	// Use this for initialization
