@@ -11,8 +11,12 @@ public class GameController : MonoBehaviour {
 	public int [] suggestions;
 	private int suggestionIndex;
 
+	private bool countingDown;
+	private float finalCountdown;
+	//how much time the final countdown should be
+	public float finalTime;
 
-	private float timer;
+	private float suggestionTimer;
 //	public int[] counter;
 //	public int totalNumsPlaced;
 	public ArrayList pool;
@@ -64,7 +68,7 @@ public class GameController : MonoBehaviour {
 				numBuf = numBuf + " | " + suggestions [i];
 			}
 			Debug.Log(numBuf + " | ");
-			timer = 0f;
+			suggestionTimer = 0f;
 			suggestionIndex = 0;
 		}
 
@@ -76,10 +80,18 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		timer = timer + Time.deltaTime;
+		suggestionTimer = suggestionTimer + Time.deltaTime;
+
+		if (countingDown) {
+			finalCountdown -= Time.deltaTime;
+			if (finalCountdown <= 0f) {
+				Debug.Log ("TIMES UP");
+			}
+		}
+
 		if (suggesting) {
 			//if timer is up, or the numbers have all been used
-			if (timer > refreshTime || suggestionIndex >= suggestions.Length) {
+			if (suggestionTimer > refreshTime || suggestionIndex >= suggestions.Length) {
 				for (int i = suggestionIndex; i < suggestions.Length; i++) {
 					pool.Add (suggestions [i]);
 				}
@@ -90,7 +102,7 @@ public class GameController : MonoBehaviour {
 					numBuf = numBuf + " | " + suggestions [i];
 				}
 				Debug.Log(numBuf + " | ");
-				timer = 0f;
+				suggestionTimer = 0f;
 				suggestionIndex = 0;
 			}
 		}
@@ -111,6 +123,44 @@ public class GameController : MonoBehaviour {
 			Debug.Log ("YOU WIN");
 		}
 	}
+
+	public void triggerTimer() {
+		countingDown = true;
+		finalCountdown = finalTime;
+	}
+
+
+	//generates the numbers for that 
+	int[] generateNums() {
+
+		int[] nums = new int[Mathf.Min(numSuggestions, pool.Count)];
+
+		int pc = pool.Count;
+		for (int i = 0; i < Mathf.Min(numSuggestions, pc) ; i++) {
+			int ind = (int)(Random.value * pool.Count);
+
+			nums [i] = (int) pool[ind];
+			pool.RemoveAt (ind);
+			//			counter [nums [i]]++;
+		}
+
+		return nums;
+	}
+
+	public int useSuggestion() {
+		suggestionIndex++;
+		//		totalNumsPlaced++;
+		//		pool.Remove (suggestions [suggestionIndex - 1]);
+		//		counter [suggestions[suggestionIndex - 1]]++;
+		return suggestions [suggestionIndex - 1];
+	}
+
+
+	/*
+	 * 
+	 * CHECKING FUNCTIONS FOLLOW
+	 * 
+	 */
 
 	//check columns for correctness
 	bool checkCols() {
@@ -271,28 +321,5 @@ public class GameController : MonoBehaviour {
 		return true;
 	}
 		
-	//generates the numbers for that 
-	int[] generateNums() {
 
-		int[] nums = new int[Mathf.Min(numSuggestions, pool.Count)];
-
-		int pc = pool.Count;
-		for (int i = 0; i < Mathf.Min(numSuggestions, pc) ; i++) {
-			int ind = (int)(Random.value * pool.Count);
-
-			nums [i] = (int) pool[ind];
-			pool.RemoveAt (ind);
-//			counter [nums [i]]++;
-		}
-
-		return nums;
-	}
-
-	public int useSuggestion() {
-		suggestionIndex++;
-//		totalNumsPlaced++;
-//		pool.Remove (suggestions [suggestionIndex - 1]);
-//		counter [suggestions[suggestionIndex - 1]]++;
-		return suggestions [suggestionIndex - 1];
-	}
 }
