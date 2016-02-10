@@ -38,6 +38,7 @@ public class Square : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+//		transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
 		//random bullshit to make the cubes float around a bit
 //		transform.position = new Vector3(transform.position.x+0.005f*Mathf.Sin(Time.time+offset), transform.position.y+0.005f*Mathf.Sin(Time.time+offset), originalPos.z);
 
@@ -55,9 +56,9 @@ public class Square : MonoBehaviour {
 			//color adjustments for possible transparency
 			if (number == 0 && controller.transparent) {
 				if (wrong) {
-					myRenderer.material.color = new Color (1f, 0.5f, 0.5f, 0.6f);
+					myRenderer.material.color = new Color (1f, 0.5f, 0.5f, 0.1f);
 				} else {
-					myRenderer.material.color = new Color (1f, 1f, 1f, 0.6f);
+					myRenderer.material.color = new Color (1f, 1f, 1f, 0.1f);
 				}
 			} else {
 				if (wrong) {
